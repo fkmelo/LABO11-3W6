@@ -16,6 +16,7 @@ namespace PresseMots.Models.Data
         public DbSet<Like> Likes { get; set; }
         public DbSet<Share> Shares { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<StoryTag> StoryTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

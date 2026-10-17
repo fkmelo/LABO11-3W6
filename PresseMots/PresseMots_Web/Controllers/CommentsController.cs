@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PresseMots.Models;
 using PresseMots.Models.Data;
+using PresseMots.Models.ViewModels;
 using PresseMots.Utility;
 
 namespace PresseMots.Controllers
@@ -34,16 +35,17 @@ namespace PresseMots.Controllers
             if (maxSubStr > 300) maxSubStr = 300;
             var shortStory = story.Content?.Substring(0, maxSubStr);
 
-            var comments = story.Comments.Where(x => !x.Hidden).OrderBy(x => x.Id);
+            var ViewModel = new CommentIndexViewModel();
 
             // À FAIRE : Utilisez un VM pour retourner les données de wordCount, storyTitle, shortStory, storyId et comments
 
-            ViewBag.WordCount = wordCount;
-            ViewBag.StoryTitle = title;
-            ViewBag.ShortStory = shortStory;
-            ViewBag.StoryId = storyId;
+            ViewModel.Comments = story.Comments.Where(x => !x.Hidden).OrderBy(x => x.Id);
+            ViewModel.WordCount = wordCount;
+            ViewModel.StoryTitle = title;
+            ViewModel.ShortStory = shortStory;
+            ViewModel.StoryId = storyId;
             
-            return View(comments);
+            return View(ViewModel);
         }
 
  

@@ -150,6 +150,7 @@ namespace PresseMots.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
+                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationTime")
@@ -195,6 +196,29 @@ namespace PresseMots.Migrations
                             OwnerId = 1,
                             Title = "Utilité de MS Word"
                         });
+                });
+
+            modelBuilder.Entity("PresseMots.Models.StoryTag", b =>
+                {
+                    b.Property<int>("StoryTagId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StoryTagId"));
+
+                    b.Property<int>("StoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StoryTagId");
+
+                    b.HasIndex("StoryId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("StoryTags");
                 });
 
             modelBuilder.Entity("PresseMots.Models.Tag", b =>
@@ -245,15 +269,15 @@ namespace PresseMots.Migrations
 
             modelBuilder.Entity("StoryTag", b =>
                 {
+                    b.Property<int>("StorysId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TagsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("storysId")
-                        .HasColumnType("int");
+                    b.HasKey("StorysId", "TagsId");
 
-                    b.HasKey("TagsId", "storysId");
-
-                    b.HasIndex("storysId");
+                    b.HasIndex("TagsId");
 
                     b.ToTable("StoryTag");
                 });
@@ -317,17 +341,36 @@ namespace PresseMots.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("StoryTag", b =>
+            modelBuilder.Entity("PresseMots.Models.StoryTag", b =>
                 {
-                    b.HasOne("PresseMots.Models.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
+                    b.HasOne("PresseMots.Models.Story", "Story")
+                        .WithMany("StoryTags")
+                        .HasForeignKey("StoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PresseMots.Models.Tag", "Tag")
+                        .WithMany("StoryTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Story");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("StoryTag", b =>
+                {
                     b.HasOne("PresseMots.Models.Story", null)
                         .WithMany()
-                        .HasForeignKey("storysId")
+                        .HasForeignKey("StorysId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PresseMots.Models.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -339,6 +382,13 @@ namespace PresseMots.Migrations
                     b.Navigation("Likes");
 
                     b.Navigation("Shares");
+
+                    b.Navigation("StoryTags");
+                });
+
+            modelBuilder.Entity("PresseMots.Models.Tag", b =>
+                {
+                    b.Navigation("StoryTags");
                 });
 
             modelBuilder.Entity("PresseMots.Models.User", b =>

@@ -18,7 +18,7 @@
                 }
             </div>
             <div class="card-text" >
-                <partial name="_tags" model="Model" />
+                <partial name="_tags" model="item" />
             </div>
             <div class="panel-footer">
 
@@ -36,7 +36,6 @@
                 <a asp-action="Index" asp-route-storyId="@item.Id" asp-controller="Comments">@item.Comments.Where(x => !x.Hidden).Count() commentaire(s)</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
-                <a asp-action="Create" asp-controller="StoryTags" asp-route-id = "StoryId" >Supprimer</a>
             </div>
         </div>
     </div>

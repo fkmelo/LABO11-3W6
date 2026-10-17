@@ -1,4 +1,4 @@
-@model IEnumerable<PresseMots.Models.Comment>
+@model PresseMots.Models.ViewModels.CommentIndexViewModel
 
 @{
     ViewData["Title"] = "Liste des commentaires";
@@ -8,24 +8,24 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="card-title"><h2>@ViewBag.StoryTitle</h2></div>
+        <div class="card-title"><h2>@Model.StoryTitle</h2></div>
         <div class="card-text">
-            @ViewBag.ShortStory (@ViewBag.WordCount mots)
-            <a asp-action="Index" asp-controller="Stories" asp-route-id="@ViewBag.StoryId"> Consulter l'article</a>
+            @Model.ShortStory (@Model.WordCount mots)
+            <a asp-action="Index" asp-controller="Stories" asp-route-id="@Model.StoryId"> Consulter l'article</a>
         </div>
     </div>
 </div>
 
 <hr />
 
-@foreach (var item in Model)
+@foreach (var item in Model.Comments)
 {
     <table class="table table-bordered">
 
         <tbody>
             <tr>
                 <th style="width:30px;">
-                    @Html.DisplayNameFor(model => model.Email)
+                    Email
                 </th>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
@@ -40,7 +40,7 @@
             </tr>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.DisplayName)
+                    DisplayName
                 </th>
                 <td>
                     @Html.DisplayFor(modelItem => item.DisplayName)
@@ -48,7 +48,7 @@
             </tr>
             <tr>
                 <th style="white-space:pre-wrap">
-                    @Html.DisplayNameFor(model => model.Content)
+                    Content
                 </th>
                 <td>
                     @Html.DisplayFor(modelItem => item.Content)
@@ -58,5 +58,5 @@
     </table>
 }
 
-<a asp-action="Create" asp-route-storyId="@ViewBag.StoryId">Nouveau commentaire</a>
+<a asp-action="Create" asp-route-storyId="@Model.StoryId">Nouveau commentaire</a>
 

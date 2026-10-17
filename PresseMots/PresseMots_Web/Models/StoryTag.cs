@@ -2,11 +2,12 @@
 {
     public class StoryTag
     {
+        public int StoryTagId { get; set; }
 
         public int StoryId { get; set; }
         public int TagId { get; set; }
 
-        public Story Story { get; set; }
-        public Tag Tag { get; set; }
+        public virtual Story Story { get; set; }
+        public virtual Tag Tag { get; set; }
     }
 }
